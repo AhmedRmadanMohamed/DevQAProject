@@ -1,0 +1,11 @@
+.idea/
+*.iml
+.gradle/
+build/
+.intellijPlatform/
+out/
+.env
+node_modules/
+frontend/app/dist/
+frontend/app/.vite/
+/FETCH_HEAD

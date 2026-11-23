@@ -1,0 +1,25 @@
+{
+  "name": "devqa-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "frontend/app"
+  ],
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "frontend:test": "npm run test --workspace @devqa/frontend && npm run test:installed --workspace @devqa/frontend",
+    "frontend:typecheck": "npm run typecheck --workspace @devqa/frontend",
+    "frontend:build": "npm run build --workspace @devqa/frontend",
+    "frontend:dev": "npm run dev --workspace @devqa/frontend"
+  },
+  "dependencies": {
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0"
+  }
+}

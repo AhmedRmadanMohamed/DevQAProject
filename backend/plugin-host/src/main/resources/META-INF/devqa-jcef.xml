@@ -1,0 +1,6 @@
+<idea-plugin>
+    <!--
+        Intentionally empty. The optional dependency in plugin.xml adds the JCEF
+        classloader dependency only when the host IDE provides this capability.
+    -->
+</idea-plugin>

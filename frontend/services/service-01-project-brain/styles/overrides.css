@@ -1,0 +1,238 @@
+
+/* React-only JCEF host using existing DevQA design tokens. */
+html, body, #app-root { margin: 0; min-width: 0; min-height: 100%; }
+#app-root { width: 100%; height: 100vh; overflow: hidden; }
+#app-root .app-shell { height: 100vh; }
+#app-root [hidden] { display: none !important; }
+#app-root .architecture-workbench { min-width: 0; }
+#app-root .architecture-map { min-width: 0; overflow: auto; }
+#app-root .architecture-rail { overflow-y: auto; max-height: 70vh; }
+#app-root .cm-filter-group { min-width: 0; }
+#app-root .cm-filter-options { max-height: 175px; overflow-y: auto; }
+#app-root .cm-filter-options label { display: flex; align-items: center; gap: 8px; }
+#app-root .cm-filter-group input[type="search"] { width: 100%; margin: 6px 0; }
+#app-root .pb-workspace-header { margin-bottom: 12px; }
+#app-root .pdb-module-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(148px, 1fr)); gap: 10px; margin: 14px 0; }
+#app-root .pdb-module { border: 1px solid #58648c; border-radius: 9px; padding: 12px; cursor: pointer; background: #242d45; text-align: left; color: inherit; }
+#app-root .pdb-module strong, #app-root .pdb-module small { display: block; }
+#app-root .pdb-module small { color: #b7c6da; }
+#app-root .cm-option-list { max-height: 240px; overflow-y: auto; }
+#app-root button:focus-visible, #app-root input:focus-visible, #app-root select:focus-visible { outline: 2px solid #a49bff; outline-offset: 2px; }
+@media (max-width: 900px) {
+  #app-root .architecture-workbench { display: flex; flex-direction: column; }
+  #app-root .architecture-rail, #app-root .architecture-inspector { width: 100%; }
+}
+
+/* Compact, closable selectors. Large option lists never dominate the workspace. */
+#app-root .cm-dropdown > .cm-menu {
+  position: absolute;
+  inset: calc(100% + 4px) 0 auto;
+  z-index: 30;
+  margin: 0;
+  max-height: 330px;
+}
+#app-root .cm-advanced-toggle {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto 14px;
+  align-items: center;
+  gap: 9px;
+  width: min(100%, 390px);
+  margin-top: 13px;
+  padding: 10px 12px;
+  text-align: left;
+  border-color: #506b90;
+  background: #293b55;
+}
+#app-root .cm-advanced-toggle span { font-weight: 750; color: #e5f0ff; }
+#app-root .cm-advanced-toggle small { color: #9fbadd; font-size: 9px; }
+#app-root .cm-advanced-toggle b { color: #aebfff; text-align: right; }
+#app-root .cm-advanced {
+  margin-top: 7px;
+  padding: 14px;
+  border: 1px solid #425a79;
+  border-radius: 9px;
+  background: #202d40;
+}
+#app-root .cm-advanced .cm-filter-grid {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 8px;
+  margin: 0 0 12px;
+}
+#app-root .cm-filter-dropdown {
+  position: relative;
+  min-width: 0;
+  border: 1px solid #496382;
+  border-radius: 7px;
+  background: #293b52;
+}
+#app-root .cm-filter-dropdown summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 11px;
+  color: #e4efff;
+  cursor: pointer;
+  list-style: none;
+  font-size: 10px;
+  font-weight: 700;
+}
+#app-root .cm-filter-dropdown summary::-webkit-details-marker { display: none; }
+#app-root .cm-filter-dropdown summary::after { content: "▾"; color: #9eb8dc; }
+#app-root .cm-filter-dropdown[open] summary::after { content: "▴"; }
+#app-root .cm-filter-dropdown summary small { margin-left: auto; color: #96afd0; font-size: 8px; }
+#app-root .cm-filter-dropdown .cm-filter-options {
+  max-height: 170px;
+  margin: 0 7px 8px;
+  padding-top: 5px;
+  border-top: 1px solid #3d536f;
+}
+#app-root .cm-advanced-search-row { padding-top: 9px; border-top: 1px solid #3a506c; }
+#app-root .cm-sort-control { flex: 0 1 230px; }
+#app-root .cm-sort-control select { min-height: 38px; }
+#app-root .cm-rule-builder { margin-top: 14px; padding-top: 13px; border-top: 1px solid #3a506c; }
+#app-root .cm-rule { border-bottom-color: #344964; }
+#app-root .cm-not-button { display: inline-flex; align-items: center; gap: 5px; }
+
+/* Dashboard module relationships: a real bounded graph that can be shown and hidden. */
+#app-root .pdb-module-diagram {
+  max-height: 360px;
+  margin: 12px 0 8px;
+  overflow: auto;
+  border: 1px solid #405979;
+  border-radius: 9px;
+  background-color: #202d40;
+  background-image: radial-gradient(#56739755 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+#app-root .pdb-module-diagram svg { display: block; min-width: 100%; }
+#app-root .pdb-module-edge { fill: none; stroke: #6e8db3; stroke-width: 1; opacity: .72; }
+#app-root .pdb-module-node { fill: #293b55; stroke: #5d7ba1; stroke-width: 1; }
+#app-root .pdb-module-node-name { fill: #eef5ff; font-size: 10px; font-weight: 750; }
+#app-root .pdb-module-node-meta { fill: #8fa8c8; font-size: 7px; font-weight: 700; letter-spacing: .08em; }
+
+/* Framework inventory stays card-first; its secondary filters are collapsible. */
+#app-root .framework-filter-drawer {
+  margin-top: 10px;
+  border: 1px solid #3e536f;
+  border-radius: 8px;
+  background: #252f40;
+}
+#app-root .framework-filter-drawer > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  list-style: none;
+  cursor: pointer;
+  color: #dce9fb;
+  font-size: 10px;
+  font-weight: 700;
+}
+#app-root .framework-filter-drawer > summary::-webkit-details-marker { display: none; }
+#app-root .framework-filter-drawer > summary::after { content: "▾"; color: #a2b9d9; }
+#app-root .framework-filter-drawer[open] > summary::after { content: "▴"; }
+#app-root .framework-filter-drawer > summary small { margin-left: auto; color: #9db4d2; font-size: 8px; }
+#app-root .framework-filter-drawer .filter-grid { padding: 0 10px 11px; }
+#app-root .framework-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 230px;
+  padding: 15px;
+  overflow: hidden;
+  border-color: #43597a;
+  background: linear-gradient(145deg, #2b3548, #252d3d);
+  transition: transform .14s ease, border-color .14s ease, box-shadow .14s ease;
+}
+#app-root .framework-card:hover {
+  transform: translateY(-2px);
+  border-color: #7795c1;
+  box-shadow: 0 8px 24px #111a2c66;
+}
+#app-root .framework-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: linear-gradient(#9a7dff, #57a6e7);
+}
+#app-root .framework-title { align-items: flex-start; }
+#app-root .framework-title h3 { margin: 1px 0 4px; color: #f1f5ff; font-size: 13px; }
+#app-root .framework-title small { color: #93aac8; font-size: 8px; }
+#app-root .framework-card-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+#app-root .framework-card-section { margin-top: 13px; }
+#app-root .framework-card-section > span { color: #819bbb; font-size: 7px; font-weight: 800; letter-spacing: .1em; }
+#app-root .framework-card-section p { margin: 5px 0 0; max-height: 47px; overflow: hidden; }
+#app-root .framework-card-open { margin-top: auto; padding-top: 13px; color: #a9cfff; font-size: 9px; font-weight: 700; }
+
+/* Interactive architecture canvas: thin edges, draggable nodes, pan, zoom and focus mode. */
+#app-root .diagram-zoom-value {
+  min-width: 43px;
+  padding: 5px 7px;
+  border: 1px solid #405873;
+  border-radius: 5px;
+  background: #223044;
+  color: #b9cbe2;
+  text-align: center;
+  font-size: 9px;
+}
+#app-root .professional-diagram-canvas {
+  position: relative;
+  width: 100%;
+  height: 560px;
+  min-height: 560px;
+  overflow: auto;
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
+  background-color: #1d2734;
+  background-image: radial-gradient(#5470904f 1px, transparent 1px);
+  background-size: 22px 22px;
+  scrollbar-color: #526b8a #1a2431;
+}
+#app-root .professional-diagram-canvas:active { cursor: grabbing; }
+#app-root .professional-diagram-svg { display: block; max-width: none; transform-origin: 0 0; }
+#app-root .professional-edge {
+  fill: none;
+  stroke: #7186a5;
+  stroke-width: 1;
+  opacity: .58;
+  vector-effect: non-scaling-stroke;
+  transition: opacity .12s ease, stroke .12s ease, stroke-width .12s ease;
+}
+#app-root .professional-edge.active { stroke: #82c7f0; stroke-width: 1.8; opacity: .96; }
+#app-root .professional-node { transition: opacity .12s ease; }
+#app-root .professional-node.dimmed { opacity: .34; }
+#app-root .professional-node-body { fill: #29394d; stroke: #587493; stroke-width: 1; vector-effect: non-scaling-stroke; }
+#app-root .professional-node:hover .professional-node-body { fill: #304965; stroke: #8dc5e9; stroke-width: 1.5; }
+#app-root .professional-node.selected .professional-node-body { fill: #38466d; stroke: #b1a6ff; stroke-width: 2; }
+#app-root .professional-node-dot { fill: #71c7d9; }
+#app-root .professional-node.selected .professional-node-dot { fill: #c0a7ff; }
+#app-root .professional-node-name { fill: #f0f5ff; font-size: 11px; font-weight: 750; }
+#app-root .professional-node-meta { fill: #9db1c9; font-size: 8px; font-weight: 650; }
+#app-root .diagram-interaction-hint {
+  position: sticky;
+  left: 10px;
+  bottom: 9px;
+  width: max-content;
+  max-width: calc(100% - 20px);
+  padding: 6px 9px;
+  border: 1px solid #3d5570;
+  border-radius: 6px;
+  background: #172332df;
+  color: #9fb3ca;
+  font-size: 8px;
+  pointer-events: none;
+}
+#app-root .architecture-workbench.focus-canvas { grid-template-columns: minmax(0, 1fr); }
+#app-root .architecture-workbench.focus-canvas > .architecture-rail,
+#app-root .architecture-workbench.focus-canvas > .architecture-inspector { display: none; }
+#app-root .architecture-workbench.focus-canvas > .architecture-map { grid-column: 1; }
+
+@media (max-width: 760px) {
+  #app-root .framework-grid { grid-template-columns: 1fr; }
+  #app-root .cm-advanced { padding: 10px; }
+  #app-root .professional-diagram-canvas { height: 470px; min-height: 470px; }
+}
